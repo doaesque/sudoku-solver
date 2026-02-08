@@ -20,7 +20,11 @@ const Sidebar = ({ onSolve, onSolveCell, onReset, onHint, isHintActive, onCheck,
               onClick={onHint}
               disabled={isSolving}
               data-tooltip={isHintActive ? "Sembunyikan angka kecil" : "Tampilkan kandidat angka"}
-              style={isHintActive ? { backgroundColor: '#ffe3ea', color: '#ff85a1', border: '2px solid #ff85a1' } : {}}
+              style={isHintActive ? {
+                backgroundColor: 'var(--bg-main)', 
+                color: 'var(--panel-dark-pink)',
+                border: '2px solid var(--panel-dark-pink)'
+              } : {}}
             >
               {isHintActive ? 'UNHINT' : 'HINT'}
             </button>
