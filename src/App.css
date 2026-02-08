@@ -8,7 +8,7 @@
   --text-white: #ffffff;
   --btn-hover: #fff0f5;
   --focus-color: #ff1493;
-  --cell-size: 40px;
+  --cell-size: clamp(28px, 9vw, 40px); /* Responsive Size */
 }
 
 body {
@@ -21,27 +21,22 @@ body {
   min-height: 100vh;
 }
 
-
 button:focus, input:focus { outline: none; }
 
 /* ========================= */
-/* CHIIKAWA CUSTOM CURSOR */
+/* CUSTOM CURSOR */
 /* ========================= */
-
-/* Kursor standar untuk seluruh area web */
 html, body {
   cursor: url('/chiikawa.png'), auto !important;
 }
 
-/* Kursor saat diarahkan ke elemen yang bisa diklik (tombol, link, dll) */
-button, 
-.team-icon-btn, 
-.usagi-container,
-[role="button"] {
+button, .team-icon-btn, .usagi-container, [role="button"] {
   cursor: url('/hachikaware.png'), pointer !important;
 }
 
-
+/* ========================= */
+/* LAYOUT & HEADER */
+/* ========================= */
 .sudoku-container {
   display: flex; flex-direction: column; align-items: center;
   width: 100%; max-width: 1300px;
@@ -53,52 +48,49 @@ button,
   width: 90%; margin-bottom: 30px; margin-top: 40px; position: relative;
 }
 
-.character-reading {
-  position: absolute;
-  left: 0;       /* Menempel ke sisi paling kiri header */
-  top: -10px;    /* Sedikit naik ke atas agar terlihat pas */
-  width: 100px;   /* Sesuaikan ukurannya agar lebih kecil */
-  height: auto;
-  z-index: 10;
-  /* Tambahkan animasi goyang agar lebih hidup */
-  animation: wiggle 3s ease-in-out infinite;
-}
-.character-reading:hover {
-  transform: scale(1.1) rotate(5deg);
-}
-
-.character-left {
-  position: absolute;
-  right: 620px;     
-  top: -25px;
-  width: 90px; 
-  height: auto;
-  z-index: 10;
-  /* Tambahkan sedikit animasi biar lucu */
-  transition: transform 0.3s ease;   
-}
-.character-left:hover {
-  transform: scale(1.1) rotate(5deg);
-}
-
-.character-right {
-  position: absolute;
-  left: 610px;     
-  top: -30px;
-  width: 90px; 
-  height: auto;
-  z-index: 10;
-  transition: transform 0.3s ease;   
-}
-.character-right:hover {
-  transform: scale(1.1) rotate(5deg);
-}
-
-
 .title {
   color: var(--panel-dark-pink); font-size: 3.5rem; font-weight: 600;
   margin: 0; text-align: center; text-shadow: none;
 }
+
+.main-layout {
+  display: flex; gap: 30px;
+  align-items: flex-start;
+  justify-content: center; width: 100%; position: relative;
+}
+
+/* ========================= */
+/* CHARACTERS (HEADER & FOOTER) */
+/* ========================= */
+.character-reading {
+  position: absolute; left: 0; top: -10px; width: 100px; height: auto; z-index: 10;
+  animation: wiggle 3s ease-in-out infinite;
+}
+.character-reading:hover { transform: scale(1.1) rotate(5deg); }
+
+.character-left {
+  position: absolute; right: 620px; top: -25px; width: 90px; height: auto; z-index: 10;
+  transition: transform 0.3s ease;   
+}
+.character-left:hover { transform: scale(1.1) rotate(5deg); }
+
+.character-right {
+  position: absolute; left: 610px; top: -30px; width: 90px; height: auto; z-index: 10;
+  transition: transform 0.3s ease;   
+}
+.character-right:hover { transform: scale(1.1) rotate(5deg); }
+
+.character-footer1 {
+  position: absolute; right: 150px; bottom: 10px; width: 100px; height: auto; z-index: 10;
+  transition: transform 0.3s ease;   
+}
+.character-footer1:hover { transform: scale(1.1) rotate(5deg); }
+
+.character-footer2 {
+  position: absolute; right: 10px; bottom: 10px; width: 130px; height: auto; z-index: 10;
+  transition: transform 0.3s ease;   
+}
+.character-footer2:hover { transform: scale(1.1) rotate(5deg); }
 
 .team-icon-btn {
   position: absolute; right: 0; font-size: 2.2rem; background: none;
@@ -107,12 +99,9 @@ button,
 }
 .team-icon-btn:hover { transform: scale(1.1); }
 
-.main-layout {
-  display: flex; gap: 30px;
-  align-items: flex-start;
-  justify-content: center; width: 100%; position: relative;
-}
-
+/* ========================= */
+/* SIDEBAR & BUTTONS */
+/* ========================= */
 .sidebar-card {
   background-color: var(--panel-pink); padding: 25px 15px; border-radius: 20px;
   display: flex; flex-direction: column;
@@ -140,6 +129,9 @@ button,
   box-shadow: 0 5px 15px rgba(255, 133, 161, 0.2); z-index: 1000; pointer-events: none;
 }
 
+/* ========================= */
+/* SUDOKU GRID */
+/* ========================= */
 .grid-card {
   background-color: var(--panel-pink); border-radius: 20px;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -169,26 +161,15 @@ button,
   padding: 4px;
 }
 
-
 .cell-wrapper {
-  width: var(--cell-size);
-  height: var(--cell-size);
-  background: white;
-  border: 1px solid #ff9eb5;
-  box-sizing: border-box;
+  width: var(--cell-size); height: var(--cell-size);
+  background: white; border: 1px solid #ff9eb5; box-sizing: border-box;
 }
-.cell-wrapper:nth-child(3n) {
-  border-right: 6px solid #ff9eb5;
-}
-.cell-wrapper:nth-child(27n + 1),
-.cell-wrapper:nth-child(27n + 2),
-.cell-wrapper:nth-child(27n + 3),
-.cell-wrapper:nth-child(27n + 4),
-.cell-wrapper:nth-child(27n + 5),
-.cell-wrapper:nth-child(27n + 6),
-.cell-wrapper:nth-child(27n + 7),
-.cell-wrapper:nth-child(27n + 8),
-.cell-wrapper:nth-child(27n + 9) {
+/* 3x3 Borders */
+.cell-wrapper:nth-child(3n) { border-right: 6px solid #ff9eb5; }
+.cell-wrapper:nth-child(27n + 1), .cell-wrapper:nth-child(27n + 2), .cell-wrapper:nth-child(27n + 3),
+.cell-wrapper:nth-child(27n + 4), .cell-wrapper:nth-child(27n + 5), .cell-wrapper:nth-child(27n + 6),
+.cell-wrapper:nth-child(27n + 7), .cell-wrapper:nth-child(27n + 8), .cell-wrapper:nth-child(27n + 9) {
   border-top: 6px solid #ff9eb5;
 }
 .grid-board > .cell-wrapper:nth-child(n+19):nth-child(-n+27), .grid-board > .cell-wrapper:nth-child(n+46):nth-child(-n+54) { margin-bottom: 4px; }
@@ -210,11 +191,15 @@ button,
 .error { background-color: #ffcccc !important; color: #d8000c !important; border: 2px solid #d8000c !important; }
 .user-filled { color: var(--panel-dark-pink) !important; }
 
+/* ========================= */
+/* PLAYLIST & INFO PANEL */
+/* ========================= */
 .playlist-container { margin-top: 15px; width: 100%; padding-left: 30px; display: flex; align-items: center; justify-content: space-between; gap: 15px; }
 .speed-control { display: flex; align-items: center; gap: 10px; flex-grow: 1; background: rgba(255, 255, 255, 0.2); padding: 8px 15px; border-radius: 20px; }
 .speed-label { color: white; font-weight: 700; font-size: 0.9rem; white-space: nowrap; }
 .speed-slider { -webkit-appearance: none; width: 100%; height: 6px; border-radius: 5px; background: rgba(255,255,255,0.5); outline: none; cursor: pointer; position: relative; z-index: 50; }
 .speed-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: white; cursor: pointer; border: 2px solid var(--panel-dark-pink); }
+
 .btn-skip { background: white; border: none; width: 40px; height: 40px; border-radius: 50%; color: var(--panel-dark-pink); font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: 0.2s; }
 .btn-skip:hover { transform: scale(1.1); background: #fff0f5; }
 .btn-skip:active { transform: scale(0.9); }
@@ -225,46 +210,14 @@ button,
   gap: 15px; height: auto;
 }
 .info-title { color: white; font-size: 1.3rem; font-weight: 600; text-align: center; margin-bottom: 2px; text-shadow: 1px 1px 0 rgba(0,0,0,0.1); margin-top: 0; }
-.info-content p {
-  line-height: 1.6; 
-  font-size: 0.95rem;
-  margin: 0;
-  background: rgba(255, 255, 255, 0.2);
-  padding: 12px;
-  border-radius: 15px;
-}
+.info-content p { line-height: 1.6; font-size: 0.95rem; margin: 0; background: rgba(255, 255, 255, 0.2); padding: 12px; border-radius: 15px; }
 .legend-box { margin-top: auto; display: flex; flex-direction: column; gap: 8px; }
 .legend-item { background: white; padding: 10px 12px; border-radius: 12px; display: flex; align-items: center; font-weight: 700; font-size: 0.9rem; color: #555; box-shadow: 0 2px 0 rgba(0,0,0,0.05); }
 .legend-dot { width: 12px; height: 12px; border-radius: 50%; margin-right: 10px; display: inline-block; flex-shrink: 0; }
 
-.character-footer1 {
-  position: absolute;
-  right: 150px;     
-  bottom: 10px;
-  width: 100px; 
-  height: auto;
-  z-index: 10;
-  /* Tambahkan sedikit animasi biar lucu */
-  transition: transform 0.3s ease;   
-}
-.character-footer1:hover {
-  transform: scale(1.1) rotate(5deg);
-}
-
-.character-footer2 {
-  position: absolute;
-  right: 10px;     
-  bottom: 10px;
-  width: 130px; 
-  height: auto;
-  z-index: 10;
-  /* Tambahkan sedikit animasi biar lucu */
-  transition: transform 0.3s ease;   
-}
-.character-footer2:hover {
-  transform: scale(1.1) rotate(5deg);
-}
-
+/* ========================= */
+/* MODAL (TEAM) */
+/* ========================= */
 .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255, 227, 234, 0.8); display: flex; justify-content: center; align-items: center; z-index: 9999; backdrop-filter: blur(5px); }
 .modal-window { background: white; padding: 30px; border-radius: 40px; border: 6px solid var(--panel-pink); width: auto; max-width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(255, 133, 161, 0.5); animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 @keyframes popIn { from{transform: scale(0.5); opacity: 0;} to{transform: scale(1); opacity: 1;} }
@@ -276,238 +229,71 @@ button,
 .member-nim { font-size: 0.7rem; color: #888; margin-top: 2px; font-weight: 600; }
 .btn-close { margin-top: 20px; background: var(--panel-pink); color: white; border: none; padding: 10px 40px; border-radius: 25px; font-family: 'Fredoka'; font-weight: 800; cursor: pointer; box-shadow: 0 5px 0 var(--panel-dark-pink); }
 .btn-close:active { transform: translateY(4px); box-shadow: none; }
-/* ✅ Responsive Cell Size */
-:root {
-  --cell-size: clamp(28px, 9vw, 40px);
-}
 
 /* ========================= */
-/* TABLET */
+/* RESPONSIVE: TABLET */
 /* ========================= */
 @media (max-width: 1024px) {
-  .character-left {
-    position: absolute;
-    top: -10%;
-    left: 5%;
-    transform: translateY(-20%);
-    width: 80px;
-    height: auto;
-    z-index: 10;
-    transition: transform 0.3s ease;   
-  }
-  .character-left:hover {
-    transform: scale(1.1) rotate(5deg);
-  }
-
-  .main-layout {
-    gap: 20px;
-    justify-content: center;
-  }
-
-  .character-button  {
-    position: absolute;
-    right: 20px;     
-    top: -35px;
-    transform: translateY(10%);
-    width: 90px; 
-    height: auto;
-    z-index: 10;
-    transition: transform 0.3s ease;   
-  }
-  .character-button:hover {
-    transform: translateY(10%) scale(1.1) rotate(5deg);
-  }
-
-   /* Ukuran Card di Tablet */
+  .character-left { top: -10%; left: 5%; transform: translateY(-20%); width: 80px; }
+  .main-layout { gap: 20px; justify-content: center; }
+  .character-button  { position: absolute; right: 20px; top: -35px; transform: translateY(10%); width: 90px; height: auto; z-index: 10; transition: transform 0.3s ease; }
+  .character-button:hover { transform: translateY(10%) scale(1.1) rotate(5deg); }
   .sidebar-card { width: 140px; }
   .info-card { width: 200px; }
 }
 
-
 /* ========================= */
-/* MOBILE BESAR */
+/* RESPONSIVE: MOBILE LARGE */
 /* ========================= */
 @media (max-width: 768px) {
+  body { align-items: flex-start; }
+  .header { flex-direction: column; gap: 10px; margin-top: 20px; }
+  .title { font-size: 2.5rem; }
 
-  body {
-    align-items: flex-start;
-  }
+  /* Main Layout Stacking */
+  .main-layout { flex-direction: row; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 10px; width: 100%; padding: 0 10px; box-sizing: border-box; }
 
-  /* --- HEADER (TIDAK DIUBAH) --- */
-  .header {
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
-  }
-
-  .title {
-    font-size: 2.5rem;
-  }
-
-  .main-layout {
-    flex-direction: row; /* Ganti ke ROW agar bisa sejajar */
-    flex-wrap: wrap;     /* Izinkan turun baris (Grid sendirian di atas) */
-    justify-content: center;
-    align-items: flex-start;
-    gap: 10px;
-    width: 100%;
-    padding: 0 10px;     /* Padding kiri kanan layar */
-    box-sizing: border-box;
-  }
-
-  /* --- 2. POSISI GRID (Paling Atas) --- */
-  .grid-card {
-    order: 1;           /* Urutan ke-1 */
-    width: 100%;        /* Ambil lebar penuh */
-    max-width: 400px;   /* Batasi biar ga terlalu lebar */
-    margin-bottom: 5px;
-    padding: 15px;
-  }
-  
-  /* Kecilkan sedikit papan sudokunya biar pas */
+  /* Grid First */
+  .grid-card { order: 1; width: 100%; max-width: 400px; margin-bottom: 5px; padding: 15px; }
   .grid-board { transform: scale(0.95); transform-origin: top center; }
 
-  /* --- 3. POSISI SIDEBAR (Kiri Bawah) --- */
-  .sidebar-card {
-    order: 2;           /* Urutan ke-2 */
-    width: 40%;         /* Kurang dari setengah layar */
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    height: fit-content !important; 
-  }
-
-  /* Penyesuaian Tombol di Kolom Sempit */
+  /* Sidebar Left */
+  .sidebar-card { order: 2; width: 40%; padding: 10px; display: flex; flex-direction: column; height: fit-content !important; }
   .sidebar-content { gap: 8px; }
-  
-  .btn-group {
-    flex-direction: column; /* Tombol disusun ke bawah */
-    gap: 6px;
-  }
-  
-  .btn-blob {
-    width: 100%;        /* Tombol penuhi lebar sidebar */
-    font-size: 0.75rem; /* Teks lebih kecil */
-    padding: 8px 4px;   /* Padding lebih tipis */
-    height: auto;
-  }
+  .btn-group { flex-direction: column; gap: 6px; }
+  .btn-blob { width: 100%; font-size: 0.75rem; padding: 8px 4px; height: auto; }
 
-  /* --- 4. POSISI INFO PANEL (Kanan Bawah) --- */
-  .info-column-wrapper {
-    order: 3;           /* Urutan ke-3 */
-    width: 48%;         /* Sisa lebar layar (46% + 48% + gap ~= 100%) */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .info-card {
-    width: 100% !important;
-    padding: 12px;
-    box-sizing: border-box;
-  }
-
-  /* Kecilkan teks Info Panel agar muat */
+  /* Info Panel Right */
+  .info-column-wrapper { order: 3; width: 48%; display: flex; flex-direction: column; align-items: center; }
+  .info-card { width: 100% !important; padding: 12px; box-sizing: border-box; }
   .info-title { font-size: 0.9rem; margin-bottom: 8px; }
   .info-content p { font-size: 0.7rem; padding: 8px; line-height: 1.4; }
   .legend-item { font-size: 0.7rem; padding: 5px; }
-  
-  /* Hide Mascot */
-  .character-reading,
-  .character-right,
-  .character-footer1,
-  .character-footer2 {
-    display: none;
-  }
 
-  /* --- 5. PERBAIKAN GRID LABEL (HURUF & ANGKA) --- */
-  .grid-labels-top span {
-    font-size: 0.8rem !important; /* Perkecil angka 1-9 */
-    width: var(--cell-size) !important; 
-  }
+  /* Hide Decorations */
+  .character-reading, .character-right, .character-footer1, .character-footer2 { display: none; }
 
-  .grid-labels-left span {
-    font-size: 0.8rem !important; /* Perkecil huruf A-I */
-    height: var(--cell-size) !important;
-    justify-content: center;
-    margin-right: 4px;
-  }
+  /* Smaller Grid Labels */
+  .grid-labels-top span { font-size: 0.8rem !important; width: var(--cell-size) !important; }
+  .grid-labels-left span { font-size: 0.8rem !important; height: var(--cell-size) !important; justify-content: center; margin-right: 4px; }
 
-  /* --- 6. PERBAIKAN MODAL MEET THE TEAM (VERSI RAPI & WRAP) --- */
-  
-  .modal-window {
-    width: 90% !important;        /* Lebar modal menyesuaikan HP */
-    max-width: 340px !important;  /* Batas lebar maksimal */
-    padding: 15px !important;
-    border-width: 4px !important;
-    
-    /* Jaga-jaga kalau anggotanya banyak, scroll-nya ke BAWAH */
-    max-height: 80vh; 
-    overflow-y: auto; 
-  }
-  
-  .modal-window h2 {
-    font-size: 1.2rem;
-    margin-bottom: 12px;
-    margin-top: 0;
-  }
-
-  /* INI KUNCI AGAR TIDAK KEPOTONG SAMPING */
-  .team-grid {
-    display: flex !important;
-    flex-wrap: wrap !important;       /* Paksa turun baris kalau penuh */
-    justify-content: center !important; /* Rata tengah */
-    gap: 8px !important;              /* Jarak antar kartu */
-    overflow-x: visible !important;   /* Matikan scrollbar samping */
-    padding-bottom: 5px !important;
-  }
-
-  .team-card {
-    width: 72px !important;           /* Ukuran pas untuk 3-4 orang sebaris */
-    padding: 8px 4px !important;
-    margin-bottom: 4px !important;
-    flex-shrink: 0 !important;        /* Mencegah kartu gepeng */
-  }
-
-  .avatar-placeholder {
-    width: 40px !important;
-    height: 40px !important;
-    font-size: 1.2rem !important;
-    border-width: 2px !important;
-    margin-bottom: 4px !important;
-  }
-
-  .member-name { 
-    font-size: 0.65rem !important; 
-    margin-top: 2px; 
-    line-height: 1.2;
-  }
-  
-  .member-nim { 
-    font-size: 0.55rem !important; 
-    color: #888;
-  }
-  
-  .btn-close {
-    padding: 8px 25px !important;
-    font-size: 0.8rem !important;
-    margin-top: 15px !important;
-    width: auto !important;
-  }
-
+  /* Mobile Modal Fixes */
+  .modal-window { width: 90% !important; max-width: 340px !important; padding: 15px !important; border-width: 4px !important; max-height: 80vh; overflow-y: auto; }
+  .modal-window h2 { font-size: 1.2rem; margin-bottom: 12px; margin-top: 0; }
+  .team-grid { display: flex !important; flex-wrap: wrap !important; justify-content: center !important; gap: 8px !important; overflow-x: visible !important; padding-bottom: 5px !important; }
+  .team-card { width: 72px !important; padding: 8px 4px !important; margin-bottom: 4px !important; flex-shrink: 0 !important; }
+  .avatar-placeholder { width: 40px !important; height: 40px !important; font-size: 1.2rem !important; border-width: 2px !important; margin-bottom: 4px !important; }
+  .member-name { font-size: 0.65rem !important; margin-top: 2px; line-height: 1.2; }
+  .member-nim { font-size: 0.55rem !important; color: #888; }
+  .btn-close { padding: 8px 25px !important; font-size: 0.8rem !important; margin-top: 15px !important; width: auto !important; }
 }
 
 /* ========================= */
-/* MOBILE KECIL */
+/* RESPONSIVE: MOBILE SMALL */
 /* ========================= */
 @media (max-width: 380px) {
-  /* Kalau layar kekecilan banget, teks judul dikecilin lagi */
   .title { font-size: 1.8rem; }
-  
-  /* Font tombol diperkecil lagi */
   .btn-blob { font-size: 0.65rem; padding: 6px 2px; }
-  
-  /* Papan Sudoku diskalakan lebih kecil lagi */
   .grid-card { padding: 10px; }
   .grid-board { transform: scale(0.85); }
 }
