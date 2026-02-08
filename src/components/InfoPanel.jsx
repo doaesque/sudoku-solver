@@ -1,5 +1,5 @@
-import React from 'react';
-import '../App.css';
+import React from 'react'
+import '../App.css'
 
 const InfoPanel = ({ message }) => {
   return (
@@ -24,7 +24,7 @@ const InfoPanel = ({ message }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default InfoPanel;
+export default InfoPanel

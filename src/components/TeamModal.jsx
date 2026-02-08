@@ -1,5 +1,5 @@
-import React from 'react';
-import '../App.css';
+import React from 'react'
+import '../App.css'
 
 const TeamModal = ({ onClose }) => {
   const teamMembers = [
@@ -8,7 +8,7 @@ const TeamModal = ({ onClose }) => {
     { name: "Serena", nim: "10124463", icon: "🐱" },
     { name: "Hanna",  nim: "10124464", icon: "🐰" },
     { name: "Salsa",  nim: "10124465", icon: "🐥" },
-  ];
+  ]
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -28,7 +28,7 @@ const TeamModal = ({ onClose }) => {
         <button className="btn-close" onClick={onClose}>Close</button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default TeamModal;
+export default TeamModal

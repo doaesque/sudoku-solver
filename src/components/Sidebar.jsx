@@ -1,5 +1,5 @@
-import React from 'react';
-import '../App.css';
+import React from 'react'
+import '../App.css'
 
 const Sidebar = ({ onSolve, onSolveCell, onReset, onHint, isHintActive, onCheck, onLevel, isSolving }) => {
   return (
@@ -33,7 +33,7 @@ const Sidebar = ({ onSolve, onSolveCell, onReset, onHint, isHintActive, onCheck,
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar
