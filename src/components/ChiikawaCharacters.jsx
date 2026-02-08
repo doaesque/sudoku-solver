@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, memo, useCallback } from 'react'
 import '../App.css'
 
 const quotes = {
@@ -6,18 +6,24 @@ const quotes = {
   momonga: ["Cute!", "Puji Aku!", "Momon...", "Sini!", "Lari!", "Lihat!"]
 }
 
-const ChiikawaCharacters = () => {
-  // State untuk bubble chat yang aktif
+// Menggunakan memo agar tidak terpengaruh re-render App.jsx (akibat slider speed)
+const ChiikawaCharacters = memo(() => {
   const [activeBubble, setActiveBubble] = useState(null)
+  const [currentQuote, setCurrentQuote] = useState("")
 
-  // Handler klik karakter: tampilkan bubble 2 detik
   const handleCharClick = (id) => {
+    // Ambil quote acak
+    const charQuotes = quotes[id]
+    const randomQuote = charQuotes[Math.floor(Math.random() * charQuotes.length)]
+    
+    setCurrentQuote(randomQuote)
     setActiveBubble(id)
-    setTimeout(() => setActiveBubble(null), 2000)
-  }
 
-  // Helper ambil quote acak
-  const getQuote = (char) => quotes[char][Math.floor(Math.random() * quotes[char].length)]
+    // Bubble hilang setelah 2 detik
+    setTimeout(() => {
+      setActiveBubble(null)
+    }, 2000)
+  }
 
   return (
     <div className="footer-mascot-container">
@@ -25,12 +31,11 @@ const ChiikawaCharacters = () => {
       <div 
         className="char-wrapper" 
         onClick={() => handleCharClick('usagi')}
-        style={{ cursor: 'pointer', pointerEvents: 'auto' }}
       >
         <img src="/Usagi.svg" alt="Usagi" className="character-img" />
         {activeBubble === 'usagi' && (
           <div className="speech-bubble bubble-char">
-            {getQuote('usagi')}
+            {currentQuote}
           </div>
         )}
       </div>
@@ -39,17 +44,16 @@ const ChiikawaCharacters = () => {
       <div
         className="char-wrapper" 
         onClick={() => handleCharClick('momonga')}
-        style={{ cursor: 'pointer', pointerEvents: 'auto' }}
       >
         <img src="/Momonga.svg" alt="Momonga" className="character-img" />
         {activeBubble === 'momonga' && (
           <div className="speech-bubble bubble-char">
-            {getQuote('momonga')}
+            {currentQuote}
           </div>
         )}
       </div>
     </div>
   )
-}
+})
 
 export default ChiikawaCharacters
