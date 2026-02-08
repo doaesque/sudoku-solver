@@ -19,19 +19,21 @@ const SpeedControl = ({ speed, setSpeed, onSkip, isSolving }) => {
 
   return (
     <div className="playlist-container">
-      <div className="speed-control">
+      <div 
+        className="speed-control tooltip-bottom"
+        data-tooltip="Atur Kecepatan Animasi"
+      >
         <span className="speed-label">🐢</span>
         <input
           type="range" min="0" max="100" className="speed-slider"
           value={getSliderValue()} onChange={handleSliderChange}
-          title="Atur Kecepatan Animasi"
         />
         <span className="speed-label">🐇</span>
       </div>
       <button
-        className="btn-skip" onClick={onSkip}
+        className="btn-skip tooltip-bottom" onClick={onSkip}
         disabled={!isSolving || speed === 0}
-        title="Skip ke Selesai (Instan)"
+        data-tooltip="Skip ke Selesai (Instan)"
       >
         ⏩
       </button>

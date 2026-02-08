@@ -19,8 +19,10 @@ function App() {
 
   return (
     <div className="sudoku-container">
+      {/* Header Section */}
       <Header onShowTeam={() => setShowTeam(true)} />
 
+      {/* Main Game Layout */}
       <div className="main-layout">
         <Sidebar
           onSolve={handleSolve}
@@ -38,19 +40,21 @@ function App() {
           cellStatus={cellStatus}
           candidates={candidates}
           onInputChange={handleInputChange}
-          onCellFocus={(r, c) => setActiveCell({r, c})}
+          onCellFocus={(r, c) => setActiveCell({ r, c })}
           isSolving={isSolving}
           speed={speed}
           setSpeed={setSpeed}
           onSkip={handleSkip}
         />
 
+        {/* Info & Characters Column */}
         <div className="info-column-wrapper">
           <InfoPanel message={panelMsg} />
           <ChiikawaCharacters />
         </div>
       </div>
 
+      {/* Team Modal */}
       {showTeam && <TeamModal onClose={() => setShowTeam(false)} />}
     </div>
   )
