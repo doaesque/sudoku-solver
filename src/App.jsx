@@ -19,8 +19,11 @@ function App() {
   return (
     <div className="sudoku-container">
       <div className="header">
-        <h1 className="title">Sudoku Solver</h1>
-        <button className="team-icon-btn" onClick={() => setShowTeam(true)}>👥</button>
+        <img src="/Furuhonya.svg" className="character-reading" />
+        <img src="/Chiikawa.svg" className="character-left" />
+        <h1 className="title">SUDOKAWA</h1>
+        <button className="team-icon-btn" onClick={() => setShowTeam(true)}><img src="/chiikawaa.svg" className="character-button" /></button>
+        <img src="/Hachikaware.svg" className="character-right" />
       </div>
 
       <div className="main-layout">
@@ -48,11 +51,17 @@ function App() {
         />
 
         {/* Pakai komponen InfoPanel yang baru dipisah */}
-        <InfoPanel message={panelMsg} />
+        <div className="info-column-wrapper">
+          <InfoPanel message={panelMsg} />
+          <img src="/Usagi.svg" className="character-footer1" />
+          <img src="/Momonga.svg" className="character-footer2" />
+        </div>
+        
       </div>
 
       {showTeam && <TeamModal onClose={() => setShowTeam(false)} />}
     </div>
+    
   );
 }
 

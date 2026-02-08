@@ -3,11 +3,11 @@ import '../App.css';
 
 const TeamModal = ({ onClose }) => {
   const teamMembers = [
-    { name: "Salmah", nim: "10124234", icon: "🐼" },
-    { name: "Haliza", nim: "10124235", icon: "🦊" },
-    { name: "Hanna",  nim: "10124462", icon: "🐰" },
+    { name: "Salmah", nim: "10124175", icon: "🐼" },
+    { name: "Haliza", nim: "10124178", icon: "🦊" },
     { name: "Serena", nim: "10124463", icon: "🐱" },
-    { name: "Salsa",  nim: "10124464", icon: "🐨" },
+    { name: "Hanna",  nim: "10124464", icon: "🐰" },
+    { name: "Salsa",  nim: "10124465", icon: "🐨" },
   ];
 
   return (
