@@ -3,10 +3,10 @@ import '../App.css'
 import SpeedControl from './SpeedControl'
 
 const SudokuGrid = ({ board, cellStatus, onInputChange, onCellFocus, isSolving, speed, setSpeed, onSkip, candidates }) => {
-
   return (
     <div className="grid-card">
       <div className="board-area">
+        {/* FIX: OVERLAY PINDAH KESINI (Di luar grid-board, tapi di dalam board-area) */}
         {isSolving && <div className="grid-overlay" title="Tunggu proses selesai..." />}
 
         <div className="grid-labels-top">
@@ -19,6 +19,8 @@ const SudokuGrid = ({ board, cellStatus, onInputChange, onCellFocus, isSolving, 
           </div>
 
           <div className="grid-board">
+            {/* Overlay SUDAH DIHAPUS DARI SINI */}
+
             {board.map((row, r) =>
               row.map((cell, c) => (
                 <div key={`${r}-${c}`} className="cell-wrapper">
@@ -47,13 +49,12 @@ const SudokuGrid = ({ board, cellStatus, onInputChange, onCellFocus, isSolving, 
         </div>
       </div>
 
-      <SpeedControl
-        speed={speed}
-        setSpeed={setSpeed}
-        onSkip={onSkip}
-        isSolving={isSolving}
+      <SpeedControl 
+        speed={speed} 
+        setSpeed={setSpeed} 
+        onSkip={onSkip} 
+        isSolving={isSolving} 
       />
-
     </div>
   )
 }
