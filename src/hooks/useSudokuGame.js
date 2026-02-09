@@ -48,7 +48,7 @@ export const useSudokuGame = () => {
 
   // --- HANDLERS ---
 
-  const handleLevel = (lv) => {
+  const handleLevel = async (lv) => {
     if (isSolving) return
 
     const puzzles = SAMPLES[lv]
@@ -62,12 +62,15 @@ export const useSudokuGame = () => {
     setIsHintActive(false)
     setCellStatus(newBoard.map(r => r.map(c => c !== 0 ? 'fixed' : '')))
 
-    const solved = getSolvedBoard(newBoard)
-    setSolutionKey(solved)
-
-    setPanelMsg(`Mode ${lv.toUpperCase()} (Soal #${randomIndex + 1}) siap!`)
+    setPanelMsg(`Mode ${lv.toUpperCase()} dipilih. Menghitung solusi...`)
     setSpeed(50)
     setActiveCell(null)
+
+    setTimeout(() => {
+        const solved = getSolvedBoard(newBoard)
+        setSolutionKey(solved)
+        setPanelMsg(`Mode ${lv.toUpperCase()} (Soal #${randomIndex + 1}) Siap!`)
+    }, 100)
   }
 
   const handleInputChange = (e, r, c) => {
