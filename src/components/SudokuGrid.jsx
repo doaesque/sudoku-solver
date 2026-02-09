@@ -35,7 +35,7 @@ const SudokuGrid = ({ board, cellStatus, onInputChange, onCellFocus, isSolving, 
                       ))}
                     </div>
                   )}
-                  
+
                   {/* Layer Input User */}
                   <input
                     className={`cell ${cellStatus[r][c]}`}
@@ -53,11 +53,11 @@ const SudokuGrid = ({ board, cellStatus, onInputChange, onCellFocus, isSolving, 
         </div>
       </div>
 
-      <SpeedControl 
-        speed={speed} 
-        setSpeed={setSpeed} 
-        onSkip={onSkip} 
-        isSolving={isSolving} 
+      <SpeedControl
+        speed={speed}
+        setSpeed={setSpeed}
+        onSkip={onSkip}
+        isSolving={isSolving}
       />
     </div>
   )

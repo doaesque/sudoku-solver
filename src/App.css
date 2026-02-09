@@ -517,7 +517,7 @@ button, .team-icon-btn, [role="button"] {
   backdrop-filter: none;
   z-index: 999;
   border-radius: 15px;
-  cursor: wait;
+  cursor: not-allowed;
 }
 
 .grid-labels-top {
