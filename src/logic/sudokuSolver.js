@@ -3,78 +3,54 @@ import { isValid } from './validator'
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
 /**
- * HEURISTIC: Minimum Remaining Values (MRV)
- * Mencari sel kosong yang memiliki pilihan angka valid paling SEDIKIT.
- * Ini adalah bentuk "Informed Search" yang membuat
- * algoritma Backtracking jauh lebih cerdas dan cepat.
+ * STRATEGI NAIVE (LINEAR SEARCH):
+ * Mencari sel kosong secara berurutan dari kiri atas ke kanan bawah.
+ * Ini adalah pendekatan klasik Backtracking yang paling mudah divisualisasikan.
  */
-const findBestEmptyCell = (board) => {
-  let minOptions = 10 // Inisialisasi dengan nilai > 9
-  let bestCell = null
-
+const findEmptyCell = (board) => {
   for (let r = 0; r < 9; r++) {
     for (let c = 0; c < 9; c++) {
       if (board[r][c] === 0) {
-        let optionsCount = 0
-        for (let num = 1; num <= 9; num++) {
-          if (isValid(board, r, c, num)) optionsCount++
-        }
-
-        // Optimasi Pruning Ekstrim:
-        // Jika ada sel kosong yang tidak punya pilihan sama sekali (0 opsi),
-        // itu adalah DEAD END (jalan buntu). Langsung kembalikan agar backtrack terjadi.
-        if (optionsCount === 0) return { r, c, optionsCount }
-
-        // Simpan sel ini jika opsi-nya lebih sedikit dari yang ditemukan sebelumnya
-        if (optionsCount < minOptions) {
-          minOptions = optionsCount
-          bestCell = { r, c, optionsCount }
-        }
+        return { r, c } // Kembalikan koordinat sel kosong pertama yang ketemu
       }
     }
   }
-  return bestCell
+  return null // Tidak ada sel kosong (Solved)
 }
 
-// Algoritma Backtracking dengan Visualisasi & Heuristik
+// Algoritma Backtracking Murni (Naive)
 export const solveSudoku = async (board, updateBoard, speedRef, stats = { iterations: 0 }) => {
-  // 1. Cari sel terbaik untuk diisi (Strategi MRV)
-  // Alih-alih urut dari (0,0), kita cari yang paling "kritis".
-  const emptyCell = findBestEmptyCell(board)
+  // 1. Cari kotak kosong pertama (Urut baris & kolom)
+  const emptyCell = findEmptyCell(board)
 
-  // BASIS REKURSI: Jika tidak ada sel kosong, berarti SOLVED!
+  // BASIS REKURSI: Jika tidak ada sel kosong, berarti SELESAI!
   if (!emptyCell) return true
-
-  // PRUNING: Jika ditemukan sel kosong tapi tidak ada angka valid (0 opsi),
-  // berarti langkah sebelumnya salah. Lakukan BACKTRACK.
-  if (emptyCell.optionsCount === 0) return false
 
   const { r, c } = emptyCell
 
   // 2. Coba isi dengan angka 1-9 (Sekuens Keputusan)
   for (let num = 1; num <= 9; num++) {
-    // Constraint Checking (Materi Pertemuan 14: Kendala)
+    // Constraint Checking (Cek apakah angka boleh ditaruh di sini)
     if (isValid(board, r, c, num)) {
       
       stats.iterations++
 
-      // Aksi: Tulis angka (Trial)
+      // AKSI: Tulis angka (Trial - Warna Biru/Ungu)
       board[r][c] = num
       
-      // OPTIMISASI VISUAL:
-      // Hanya update state React jika TIDAK dalam mode Skip.
-      // Ini mencegah browser freeze karena ribuan render per detik.
+      // VISUALISASI (Hanya jika tidak di-skip)
       const isSkip = speedRef.current.skipMode
       if (!isSkip) {
          updateBoard([...board.map(row => [...row])], r, c, 'trial')
          const currentDelay = speedRef.current.delay
+         // Jika delay 0 (max speed), kita tidak pakai sleep agar ngebut
          if (currentDelay > 0) await sleep(currentDelay)
       }
 
-      // Rekursi: Panggil diri sendiri untuk langkah selanjutnya
+      // REKURSI: Panggil diri sendiri untuk mengisi kotak berikutnya
       if (await solveSudoku(board, updateBoard, speedRef, stats)) return true
 
-      // Backtracking: Hapus angka jika jalan buntu (Materi Pertemuan 14: Mundur)
+      // BACKTRACKING: Jalan buntu! Hapus angka & Mundur (Warna Merah)
       board[r][c] = 0
       
       if (!isSkip) {
@@ -85,19 +61,17 @@ export const solveSudoku = async (board, updateBoard, speedRef, stats = { iterat
     }
   }
   
-  // Jika semua angka 1-9 gagal, kembalikan false (memicu backtrack di level atasnya)
+  // Jika angka 1-9 tidak ada yang cocok, kembalikan false (Memicu backtrack di level atasnya)
   return false
 }
 
-// Fungsi Helper untuk mendapatkan Kunci Jawaban (Tanpa Visualisasi)
-// Menggunakan logika yang sama agar konsisten
+// Fungsi Helper untuk mendapatkan Kunci Jawaban (Logic yang sama)
 export const getSolvedBoard = (initialBoard) => {
   const board = initialBoard.map(row => [...row])
 
   const solveHelper = (b) => {
-    const emptyCell = findBestEmptyCell(b)
+    const emptyCell = findEmptyCell(b)
     if (!emptyCell) return true
-    if (emptyCell.optionsCount === 0) return false
 
     const { r, c } = emptyCell
 

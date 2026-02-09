@@ -18,6 +18,9 @@ export const useSudokuGame = () => {
   const [isSolving, setIsSolving] = useState(false)
   const [speed, setSpeed] = useState(50)
 
+  // State baru untuk Instant Solve
+  const [isInstant, setIsInstant] = useState(false)
+
   const speedRef = useRef({ delay: 50, skipMode: false })
 
   useEffect(() => {
@@ -52,13 +55,13 @@ export const useSudokuGame = () => {
     const randomIndex = Math.floor(Math.random() * puzzles.length)
     const chosenPuzzle = puzzles[randomIndex]
     const newBoard = chosenPuzzle.map(r => [...r])
-    
+
     setBoard(newBoard)
-    setInitialBoard(newBoard.map(r => [...r])) 
+    setInitialBoard(newBoard.map(r => [...r]))
     setCandidates(Array(9).fill().map(() => Array(9).fill([])))
     setIsHintActive(false)
     setCellStatus(newBoard.map(r => r.map(c => c !== 0 ? 'fixed' : '')))
-    
+
     const solved = getSolvedBoard(newBoard)
     setSolutionKey(solved)
 
@@ -139,7 +142,7 @@ export const useSudokuGame = () => {
 
   const handleSolve = async () => {
     if (isSolving) return
-    
+
     setIsHintActive(false)
     setCandidates(Array(9).fill().map(() => Array(9).fill([])))
 
@@ -170,7 +173,10 @@ export const useSudokuGame = () => {
 
     setIsSolving(true)
     setPanelMsg("🔍 Mencari solusi...")
-    speedRef.current.skipMode = false
+
+    // Set mode skip sesuai status checkbox instant
+    speedRef.current.skipMode = isInstant
+    if (isInstant) setSpeed(0)
 
     const cleanStatus = cellStatus.map(row => row.map(s => s === 'error' ? 'user-filled' : s))
     setCellStatus(cleanStatus)
@@ -198,31 +204,25 @@ export const useSudokuGame = () => {
     setIsSolving(false)
 
     if (solved) {
-        setSolutionKey(boardToSolve) 
-        
-        // --- FIX: Remove unused 'r' and 'c' parameters ---
+        setSolutionKey(boardToSolve)
+
         setBoard(boardToSolve)
-        setCellStatus(prev => prev.map(row => 
+        setCellStatus(prev => prev.map(row =>
           row.map(status => status === 'fixed' ? 'fixed' : 'trial')
         ))
-        // --------------------------------------------------------
 
         setPanelMsg(
 `🎉 SELESAI!
 • Sel Kosong: ${emptyCellsCount}
 • Iterasi: ${stats.iterations} langkah
-• Waktu: ${duration} ms
-• Status: VALID ✅`
+• Waktu: ${duration} ms`
         )
     } else {
         setPanelMsg(
 `❌ GAGAL!
-
-📊 Statistik:
 • Sel Kosong: ${emptyCellsCount}
 • Iterasi: ${stats.iterations} langkah
-• Waktu: ${duration} ms
-• Status: INVALID ⛔`
+• Waktu: ${duration} ms`
         )
     }
   }
@@ -265,7 +265,7 @@ export const useSudokuGame = () => {
     setSolutionKey(null)
     setIsHintActive(false)
     setCandidates(Array(9).fill().map(() => Array(9).fill([])))
-    setSpeed(50) 
+    setSpeed(50)
     setPanelMsg("Papan bersih. Silakan pilih level atau isi sendiri.")
   }
 
@@ -276,6 +276,7 @@ export const useSudokuGame = () => {
 
   return {
     board, cellStatus, candidates, panelMsg, isSolving, speed, isHintActive,
+    isInstant, setIsInstant, // Export state baru
     handleLevel, handleSolve, handleSolveCell, handleHint, handleCheck, handleReset,
     handleInputChange, handleSkip, setSpeed, setActiveCell
   }

@@ -12,7 +12,7 @@
   --backtrack-bg: #ffd9d9;
   --focus-shading: rgba(255, 209, 220, 0.7);
   --modal-overlay: rgba(255, 227, 234, 0.8);
-  --modal-shadow: rgba(255, 133, 161, 0.25); /* Intensitas dikurangi */
+  --modal-shadow: rgba(255, 133, 161, 0.25);
   --cell-size: clamp(28px, 6vh, 42px);
   --text-white: #ffffff;
 }
@@ -217,7 +217,7 @@ button, .team-icon-btn, [role="button"] {
   width: auto;
   object-fit: contain;
   transition: transform 0.2s ease;
-  filter: drop-shadow(2px 4px 6px var(--modal-shadow)); /* Shadow Mascot */
+  filter: drop-shadow(2px 4px 6px var(--modal-shadow));
 }
 
 .footer-mascot-container .char-wrapper:first-child .character-img {
@@ -351,6 +351,78 @@ button, .team-icon-btn, [role="button"] {
   box-shadow: 0 5px 15px var(--modal-shadow);
   z-index: 9999;
   pointer-events: none;
+}
+
+/* --- CUSTOM CHECKBOX STYLE (White & Compact) --- */
+
+.instant-group-compact {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
+  padding-bottom: 5px;
+  border-bottom: none;
+}
+
+.custom-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #ffffff !important;
+  user-select: none;
+  transition: opacity 0.2s;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.custom-checkbox-label input[type="checkbox"] {
+  display: none;
+}
+
+.checkmark {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ffffff;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.custom-checkbox-label input:checked + .checkmark {
+  background-color: var(--panel-pink);
+  border-color: var(--panel-pink);
+  box-shadow: 0 0 8px rgba(255, 105, 180, 0.6);
+}
+
+.checkmark::after {
+  content: '';
+  display: none;
+  width: 5px;
+  height: 9px;
+  border: solid white;
+  border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg);
+  margin-bottom: 2px;
+}
+
+.custom-checkbox-label input:checked + .checkmark::after {
+  display: block;
+}
+
+.custom-checkbox-label:hover .checkmark {
+  transform: scale(1.1);
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.custom-checkbox-label.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .team-icon-btn[data-tooltip]:hover::after {
@@ -934,7 +1006,7 @@ button, .team-icon-btn, [role="button"] {
 
 @media (max-width: 900px) {
   :root {
-    --cell-size: 1rem; /* Fallback size */
+    --cell-size: 1rem;
   }
 
   body {
@@ -1036,7 +1108,6 @@ button, .team-icon-btn, [role="button"] {
     z-index: 50;
   }
 
-  /* Pastikan Tooltip muncul di bawah tombol pada mobile */
   .team-icon-btn[data-tooltip]:hover::after {
     top: 110%;
     left: auto;
@@ -1052,7 +1123,7 @@ button, .team-icon-btn, [role="button"] {
   .pos-right { left: 58%; top: -25px; width: 80px; }
   .char-wrapper, .footer-mascot-container { display: none; }
 
-  /* --- GRID CARD & BOARD (FLUID LAYOUT) --- */
+  /* --- GRID CARD & BOARD --- */
   .grid-card {
     padding: 15px !important;
     width: 100%;
@@ -1074,7 +1145,6 @@ button, .team-icon-btn, [role="button"] {
     align-items: stretch;
   }
 
-  /* Label Atas (1-9) */
   .grid-labels-top {
     display: grid;
     grid-template-columns: repeat(9, 1fr);
@@ -1090,7 +1160,6 @@ button, .team-icon-btn, [role="button"] {
     text-align: center;
   }
 
-  /* Label Kiri (A-I) */
   .grid-labels-left {
     width: 25px !important;
     flex-shrink: 0;
@@ -1108,7 +1177,6 @@ button, .team-icon-btn, [role="button"] {
     font-size: 0.9rem;
   }
 
-  /* Papan Grid Utama */
   .grid-board {
     flex-grow: 1;
     width: auto !important;
@@ -1121,7 +1189,6 @@ button, .team-icon-btn, [role="button"] {
     padding: 2px;
   }
 
-  /* Sel Grid */
   .cell-wrapper {
     width: 100% !important;
     height: 100% !important;

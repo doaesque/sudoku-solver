@@ -4,7 +4,7 @@ import Sidebar from './components/Sidebar'
 import SudokuGrid from './components/SudokuGrid'
 import TeamModal from './components/TeamModal'
 import InfoPanel from './components/InfoPanel'
-import Header from './components/Header' // Import Header yang baru dibuat
+import Header from './components/Header'
 import ChiikawaCharacters from './components/ChiikawaCharacters'
 import ThemeSelector from './components/ThemeSelector'
 import { useSudokuGame } from './hooks/useSudokuGame'
@@ -20,14 +20,14 @@ function App() {
   const {
     board, cellStatus, candidates, panelMsg, isSolving, speed, isHintActive,
     handleLevel, handleSolve, handleSolveCell, handleHint, handleCheck, handleReset,
-    handleInputChange, handleSkip, setSpeed, setActiveCell
+    handleInputChange, handleSkip, setSpeed, setActiveCell,
+    isInstant, setIsInstant 
   } = useSudokuGame()
 
   return (
     <div className="sudoku-container">
       <ThemeSelector currentTheme={theme} setTheme={setTheme} />
 
-      {/* Header Modular: Logic maskot & judul ada di dalamnya */}
       <Header onShowTeam={() => setShowTeam(true)} />
 
       <div className="main-layout">
@@ -41,6 +41,8 @@ function App() {
             onCheck={handleCheck}
             onLevel={handleLevel}
             isSolving={isSolving}
+            isInstant={isInstant}
+            setIsInstant={setIsInstant}
           />
         </div>
 
