@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 
 const themes = [
   { id: 'chiikawa', label: '🌸 Chiikawa' },
-  { id: 'hachikaware', label: '💙 Hachikaware' },
-  { id: 'usagi', label: '💛 Usagi' },
-  { id: 'momonga', label: '💜 Momonga' },
+  { id: 'hachikaware', label: '❄️ Hachikaware' },
+  { id: 'usagi', label: '🌻 Usagi' },
+  { id: 'momonga', label: '🪻 Momonga' },
 ]
 
 const ThemeSelector = ({ currentTheme, setTheme }) => {

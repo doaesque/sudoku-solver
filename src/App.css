@@ -673,6 +673,16 @@ button, .team-icon-btn, [role="button"] {
   transition: transform 0.2s;
   pointer-events: auto;
   z-index: 50;
+  outline: none !important; 
+  box-shadow: none !important;
+}
+
+.team-icon-btn:focus, 
+.team-icon-btn:active, 
+.team-icon-btn img {
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent; 
 }
 
 .team-icon-btn:hover {
