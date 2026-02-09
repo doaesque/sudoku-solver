@@ -4,21 +4,16 @@ import { isValid } from '../logic/validator'
 import { SAMPLES } from '../data/samples'
 
 export const useSudokuGame = () => {
-  // --- STATE ---
   const [board, setBoard] = useState(Array(9).fill().map(() => Array(9).fill(0)))
   const [cellStatus, setCellStatus] = useState(Array(9).fill().map(() => Array(9).fill('')))
   const [initialBoard, setInitialBoard] = useState(null)
   const [solutionKey, setSolutionKey] = useState(null)
   const [panelMsg, setPanelMsg] = useState("Pilih level atau isi papan sendiri!")
   const [activeCell, setActiveCell] = useState(null)
-
   const [candidates, setCandidates] = useState(Array(9).fill().map(() => Array(9).fill([])))
   const [isHintActive, setIsHintActive] = useState(false)
-
   const [isSolving, setIsSolving] = useState(false)
   const [speed, setSpeed] = useState(50)
-
-  // State baru untuk Instant Solve
   const [isInstant, setIsInstant] = useState(false)
 
   const speedRef = useRef({ delay: 50, skipMode: false })
@@ -27,9 +22,6 @@ export const useSudokuGame = () => {
     speedRef.current.delay = speed
   }, [speed])
 
-  // --- LOGIC HELPERS ---
-
-  // Hitung Candidates (Pencil Marks)
   const calculateAllCandidates = (currentBoard) => {
     const newCandidates = Array(9).fill().map(() => Array(9).fill([]))
     for (let r = 0; r < 9; r++) {
@@ -46,9 +38,7 @@ export const useSudokuGame = () => {
     return newCandidates
   }
 
-  // --- HANDLERS ---
-
-  const handleLevel = async (lv) => {
+  const handleLevel = (lv) => {
     if (isSolving) return
 
     const puzzles = SAMPLES[lv]
@@ -61,16 +51,11 @@ export const useSudokuGame = () => {
     setCandidates(Array(9).fill().map(() => Array(9).fill([])))
     setIsHintActive(false)
     setCellStatus(newBoard.map(r => r.map(c => c !== 0 ? 'fixed' : '')))
+    setSolutionKey(null)
 
-    setPanelMsg(`Mode ${lv.toUpperCase()} dipilih. Menghitung solusi...`)
+    setPanelMsg(`Mode ${lv.toUpperCase()} (Soal #${randomIndex + 1}) siap!`)
     setSpeed(50)
     setActiveCell(null)
-
-    setTimeout(() => {
-        const solved = getSolvedBoard(newBoard)
-        setSolutionKey(solved)
-        setPanelMsg(`Mode ${lv.toUpperCase()} (Soal #${randomIndex + 1}) Siap!`)
-    }, 100)
   }
 
   const handleInputChange = (e, r, c) => {
@@ -123,12 +108,14 @@ export const useSudokuGame = () => {
 
     let currentSolution = solutionKey
     if (!currentSolution) {
+      setPanelMsg("🔍 Mencari solusi...")
       const solved = getSolvedBoard(board)
       if (!solved) {
         setPanelMsg("⚠️ Papan ini tidak memiliki solusi valid!")
         return
       }
       currentSolution = solved
+      setSolutionKey(solved)
     }
 
     const answer = currentSolution[r][c]
@@ -149,14 +136,12 @@ export const useSudokuGame = () => {
     setIsHintActive(false)
     setCandidates(Array(9).fill().map(() => Array(9).fill([])))
 
-    // 1. Hitung Sel Kosong Awal
     const emptyCellsCount = board.flat().filter(cell => cell === 0).length
     if (emptyCellsCount === 0) {
       setPanelMsg("Papan sudah penuh!")
       return
     }
 
-    // Validasi input sebelum solve
     for (let r = 0; r < 9; r++) {
       for (let c = 0; c < 9; c++) {
         if (board[r][c] !== 0 && cellStatus[r][c] !== 'fixed') {
@@ -164,7 +149,7 @@ export const useSudokuGame = () => {
           const tempBoard = board.map(row => [...row])
           tempBoard[r][c] = 0
           if (!isValid(tempBoard, r, c, val)) {
-            setPanelMsg(`⚠️ Input salah di baris ${r+1} kolom ${c+1}! Perbaiki dulu.`)
+            setPanelMsg(`⚠️ Input salah di baris ${r+1} kolom ${c+1}!`)
             const ns = cellStatus.map(row => [...row])
             ns[r][c] = 'error'
             setCellStatus(ns)
@@ -177,7 +162,6 @@ export const useSudokuGame = () => {
     setIsSolving(true)
     setPanelMsg("🔍 Mencari solusi...")
 
-    // Set mode skip sesuai status checkbox instant
     speedRef.current.skipMode = isInstant
     if (isInstant) setSpeed(0)
 
@@ -185,8 +169,6 @@ export const useSudokuGame = () => {
     setCellStatus(cleanStatus)
 
     const boardToSolve = board.map(r => [...r])
-
-    // Stats & Timer
     const stats = { iterations: 0 }
     const startTime = performance.now()
 
@@ -200,54 +182,54 @@ export const useSudokuGame = () => {
     }
 
     const solved = await solveSudoku(boardToSolve, updateVisual, speedRef, stats)
-
-    const endTime = performance.now()
-    const duration = (endTime - startTime).toFixed(0)
-
+    const duration = (performance.now() - startTime).toFixed(0)
     setIsSolving(false)
 
     if (solved) {
-        setSolutionKey(boardToSolve)
+      setSolutionKey(boardToSolve)
+      setBoard(boardToSolve)
+      setCellStatus(prev => prev.map(row =>
+        row.map(status => status === 'fixed' ? 'fixed' : 'trial')
+      ))
 
-        setBoard(boardToSolve)
-        setCellStatus(prev => prev.map(row =>
-          row.map(status => status === 'fixed' ? 'fixed' : 'trial')
-        ))
-
-        setPanelMsg(
+      setPanelMsg(
 `🎉 SELESAI!
 • Sel Kosong: ${emptyCellsCount}
 • Iterasi: ${stats.iterations} langkah
 • Waktu: ${duration} ms`
-        )
+      )
     } else {
-        setPanelMsg(
+      setPanelMsg(
 `❌ GAGAL!
 • Sel Kosong: ${emptyCellsCount}
 • Iterasi: ${stats.iterations} langkah
 • Waktu: ${duration} ms`
-        )
+      )
     }
   }
 
   const handleCheck = () => {
     if (isSolving) return
+
+    let currentSolution = solutionKey
+    if (!currentSolution) {
+      setPanelMsg("🔍 Memvalidasi...")
+      const solved = getSolvedBoard(board)
+      if (!solved) {
+        setPanelMsg("⚠️ Papan ini tidak memiliki solusi valid!")
+        return
+      }
+      currentSolution = solved
+      setSolutionKey(solved)
+    }
+
     let errorCount = 0
     const newStatus = cellStatus.map(row => [...row])
 
     for (let r = 0; r < 9; r++) {
       for (let c = 0; c < 9; c++) {
         if (board[r][c] !== 0 && cellStatus[r][c] !== 'fixed') {
-          let isWrong = false;
-          if (solutionKey) {
-            if (board[r][c] !== solutionKey[r][c]) isWrong = true;
-          } else {
-            const val = board[r][c]
-            const tempBoard = board.map(row => [...row])
-            tempBoard[r][c] = 0
-            if (!isValid(tempBoard, r, c, val)) isWrong = true;
-          }
-          if (isWrong) {
+          if (board[r][c] !== currentSolution[r][c]) {
             newStatus[r][c] = 'error'
             errorCount++
           } else if (newStatus[r][c] === 'error') {
@@ -279,7 +261,7 @@ export const useSudokuGame = () => {
 
   return {
     board, cellStatus, candidates, panelMsg, isSolving, speed, isHintActive,
-    isInstant, setIsInstant, // Export state baru
+    isInstant, setIsInstant,
     handleLevel, handleSolve, handleSolveCell, handleHint, handleCheck, handleReset,
     handleInputChange, handleSkip, setSpeed, setActiveCell
   }
