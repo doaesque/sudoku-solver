@@ -122,7 +122,7 @@ button, .team-icon-btn, [role="button"] {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: max-content;
+  width: 90%;
   margin: 0 auto 20px auto;
   position: relative;
   z-index: 500;
@@ -166,7 +166,7 @@ button, .team-icon-btn, [role="button"] {
 }
 
 .character-img {
-  width: 80%;
+  width: 70%;
   height: auto;
   transition: transform 0.2s ease;
   pointer-events: auto;
@@ -174,21 +174,21 @@ button, .team-icon-btn, [role="button"] {
 
 .pos-left {
   right: auto;
-  top: auto;
-  position: absolute;
-  left: -100px;
-  top: 50%;
+  left: 56%;
+  top: 45%;
   transform: translateY(-50%);
+  margin-left: -240px;
+  position: absolute;
   width: 85px;
 }
 
 .pos-right {
-  left: auto;
-  top: auto;
-  position: absolute;
-  right: -100px;
-  top: 50%;
+  right: auto;
+  left: 45%;
+  top: 45%;
   transform: translateY(-50%);
+  margin-left: 150px;
+  position: absolute;
   width: 85px;
 }
 
@@ -934,13 +934,7 @@ button, .team-icon-btn, [role="button"] {
 
 @media (max-width: 900px) {
   :root {
-    --cell-size: calc((100vw - 39px) / 9);
-  }
-
-  @media (min-width: 450px) {
-    :root {
-      --cell-size: 44px;
-    }
+    --cell-size: 1rem; /* Fallback size */
   }
 
   body {
@@ -950,6 +944,7 @@ button, .team-icon-btn, [role="button"] {
     padding-bottom: 50px;
   }
 
+  /* --- LAYOUT UTAMA --- */
   .sudoku-container {
     position: relative;
     display: flex;
@@ -961,16 +956,28 @@ button, .team-icon-btn, [role="button"] {
     height: 100%;
   }
 
-  /* Theme Selector Mobile */
+  .main-layout {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    padding: 0 5px;
+    gap: 10px;
+    max-height: none;
+    max-width: 450px;
+    margin: 0 auto;
+    justify-content: space-between;
+  }
+
+  /* --- THEME SELECTOR --- */
   .theme-selector-wrapper {
     left: 10px;
-    width: 45px !important;
+    width: 40px !important;
   }
 
   .theme-btn {
     min-width: unset;
     width: 100%;
-    height: 45px;
+    height: 40px;
     padding: 0;
     border-radius: 50%;
     justify-content: center;
@@ -983,7 +990,7 @@ button, .team-icon-btn, [role="button"] {
   }
 
   .theme-emoji {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     margin: 0;
     line-height: 1;
   }
@@ -1002,6 +1009,7 @@ button, .team-icon-btn, [role="button"] {
     width: 100%;
   }
 
+  /* --- HEADER --- */
   .header {
     flex-direction: row;
     justify-content: center;
@@ -1020,103 +1028,114 @@ button, .team-icon-btn, [role="button"] {
   }
 
   .team-icon-btn {
-    position: absolute;
+    position: absolute !important;
+    right: 0 !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    margin: 0 !important;
+    z-index: 50;
+  }
+
+  /* Pastikan Tooltip muncul di bawah tombol pada mobile */
+  .team-icon-btn[data-tooltip]:hover::after {
+    top: 110%;
+    left: auto;
     right: 0;
-    top: 20%;
-    transform: translateY(-50%);
-    margin: 10px;
+    transform: none;
   }
 
   .character-button {
     width: 60px !important;
   }
 
-  .modal-window {
-    padding: 20px !important;
-    width: 90% !important;
-    max-width: 400px;
-    max-height: 80vh;
-    overflow-y: auto;
-    box-sizing: border-box;
-  }
-
-  .btn-close {
-    margin-top: 30px;
-  }
-
-  .team-grid {
-    gap: 10px;
-    margin-top: 15px;
-    padding-bottom: 0;
-  }
-
-  .team-card {
-    width: 80px;
-    margin: 0;
-    padding: 10px;
-  }
-
-  .avatar-placeholder {
-    width: 40px;
-    height: 40px;
-    font-size: 1.4rem;
-  }
-
-  .member-name {
-    font-size: 0.7rem;
-  }
-
   .pos-left { right: 58%; top: -20px; width: 80px; }
   .pos-right { left: 58%; top: -25px; width: 80px; }
+  .char-wrapper, .footer-mascot-container { display: none; }
 
-  .main-layout {flex-direction: row;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    padding: 0 5px;
-    gap: 10px;
-    max-height: none;
-    max-width: 450px;
-    margin: 0 auto;
-    justify-content: space-between;
-  }
-
+  /* --- GRID CARD & BOARD (FLUID LAYOUT) --- */
   .grid-card {
-    order: 1;
+    padding: 15px !important;
     width: 100%;
     max-width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
     margin-bottom: 10px;
-    padding: 15px 1px !important;
+  }
+
+  .board-area {
+    width: 100%;
     box-sizing: border-box;
   }
 
-  .grid-board {
-    transform: none !important;
-    margin: 0 auto;
+  .grid-body {
+    display: flex;
     width: 100%;
-    gap: 0;
+    align-items: stretch;
   }
 
-  .grid-labels-left {
-    width: 25px !important;
-  }
-
-  .grid-labels-left span {
-    font-size: 0.9rem !important;
-    height: var(--cell-size) !important;
-    line-height: var(--cell-size) !important;
-    justify-content: center;
-    margin-right: 0px !important;
-    padding: 0 !important;
-  }
-
+  /* Label Atas (1-9) */
   .grid-labels-top {
-    grid-template-columns: repeat(9, var(--cell-size)) !important;
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
     margin-left: 25px !important;
+    width: calc(100% - 25px) !important;
+    gap: 0;
+    margin-bottom: 2px;
   }
 
   .grid-labels-top span {
-    width: var(--cell-size) !important;
-    font-size: 0.9rem !important;
+    width: auto !important;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  /* Label Kiri (A-I) */
+  .grid-labels-left {
+    width: 25px !important;
+    flex-shrink: 0;
+    display: grid;
+    grid-template-rows: repeat(9, 1fr);
+    padding-top: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .grid-labels-left span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: auto !important;
+    font-size: 0.9rem;
+  }
+
+  /* Papan Grid Utama */
+  .grid-board {
+    flex-grow: 1;
+    width: auto !important;
+    aspect-ratio: 1 / 1;
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: repeat(9, 1fr);
+    gap: 0;
+    transform: none !important;
+    padding: 2px;
+  }
+
+  /* Sel Grid */
+  .cell-wrapper {
+    width: 100% !important;
+    height: 100% !important;
+    border: 1px solid var(--panel-pink);
+  }
+
+  .cell-wrapper:nth-child(3n) { border-right-width: 2px; }
+  .grid-board > .cell-wrapper:nth-child(n+19):nth-child(-n+27),
+  .grid-board > .cell-wrapper:nth-child(n+46):nth-child(-n+54) {
+    border-bottom-width: 2px;
+  }
+
+  .cell {
+    font-size: clamp(12px, 4vw, 24px) !important;
   }
 
   .playlist-container {
@@ -1124,6 +1143,7 @@ button, .team-icon-btn, [role="button"] {
     padding-left: 0;
   }
 
+  /* --- SIDEBAR & INFO PANEL --- */
   .sidebar-wrapper {
     order: 2;
     flex: 0 0 calc(40% - 5px);
@@ -1140,16 +1160,32 @@ button, .team-icon-btn, [role="button"] {
   .sidebar-card, .info-card {
     width: 100% !important;
   }
+
   .btn-blob { font-size: 0.8rem; padding: 8px 4px; }
   .info-title { font-size: 1rem; margin-bottom: 8px; }
   .info-content p { font-size: 0.75rem; padding: 8px; line-height: 1.4; }
-  .char-wrapper, .footer-mascot-container { display: none; }
+
+  /* --- MODAL (TEAM) --- */
+  .modal-window {
+    padding: 20px !important;
+    width: 90% !important;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+
+  .btn-close { margin-top: 30px; }
+  .team-grid { gap: 10px; margin-top: 15px; padding-bottom: 0; }
+  .team-card { width: 80px; margin: 0; padding: 10px; }
+  .avatar-placeholder { width: 40px; height: 40px; font-size: 1.4rem; }
+  .member-name { font-size: 0.7rem; }
 }
 
 @media (max-width: 400px) {
   .title { font-size: 2rem; }
   .btn-blob { font-size: 0.7rem; padding: 8px 4px; }
-  .grid-card { padding: 10px; }
-  .grid-board { transform: scale(0.85); }
+  .grid-board { transform: none !important; }
+  .grid-card { padding: 10px 5px !important; }
   .sidebar-wrapper, .info-column-wrapper { flex: 0 0 48%; }
 }

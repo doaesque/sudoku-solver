@@ -15,9 +15,8 @@ const Header = ({ onShowTeam }) => {
       <button 
         className="team-icon-btn" 
         onClick={onShowTeam}
-        title="Meet the Team"
+        data-tooltip="Meet the Team" 
       >
-        {/* Pastikan file ini ada di public folder, atau ganti dengan SVG/Icon */}
         <img src="/chiikawaa.svg" alt="Team" className="character-button" />
       </button>
 
